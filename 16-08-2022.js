@@ -30,17 +30,28 @@ function josephus(items,k){
     let result = [],
         counted = 1
     
-        for(let i = 1 ; i <= items.length; i++){
-            if((counted % k === 0) && (result.find(n => n === items[i-1]) !== true)){ 
-            result.push(items[i-1])
+        for(let i = 0 ; i <= items.length; i++){
+            if((counted % k === 0) && (result.findIndex(n => n === items[i]) === -1) && (items[i] !== undefined)){ 
+            result.push(items[i])
             counted = 0
-            } else if(i === items.length){
-                i = 1
+            items.splice(i,1)
+            i -= 1
+                if(items.length === 0) break
+                else if(items.length === 1) {
+                    result.push(items[0])
+                    items.splice(0,1)
+                } 
+            } else if(i === items.length -1 && items.length > 2) i = -1
+            else if(i === items.length) i = 0
+            else if(items.length === 2 && items[0] === 1){
+                result.push(items[0])
+                items.splice(0,1)
+                result.push(items[0])
+                items.splice(0,1)
             }
             counted++
         }
-        
     return result    
-  }
+ }
 
   josephus([1,2,3,4,5,6,7],3)
